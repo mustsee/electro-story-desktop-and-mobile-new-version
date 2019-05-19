@@ -16,6 +16,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  user-select: none;
 }
 
 *,
@@ -29,13 +30,13 @@ html {
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  background-color: red;
+  /*background-color: red;*/
 }
 
 .container {
   width: 1040px;
   padding: 50px 20px;
   display: flex;
-  background: azure;
+  /*background: azure;*/
 }
 </style>
