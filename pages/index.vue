@@ -87,15 +87,25 @@ export default {
 .content {
   display: flex;
   width: 100%;
+  @media (max-width: 788px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .left {
-  background: #eee;
+  //background: #eee;
   width: 50%;
   margin: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @media (max-width: 788px) {
+    width: 480px;
+  }
+  @media (max-width: 520px) {
+    width: 334px;
+  }
   .chapter {
     //background: yellow;
     margin-bottom: 20px;
@@ -137,7 +147,7 @@ export default {
       }
     }
   }
-  .pagination {
+  .pagination { // remonter la pagination au niveau du chapitre quand @media < 788px
     display: flex;
     justify-content: flex-end;
     margin-top: 50px;
@@ -164,13 +174,22 @@ export default {
 }
 
 .right {
-  background: #ccc;
+  //background: #ccc;
   width: 50%;
   margin: 0 20px;
   display: flex;
   flex-direction: column;
+  @media (max-width: 788px) {
+    margin-top: 50px !important;
+    width: 480px;
+  }
+  @media (max-width: 520px) {
+    margin-top: 50px !important;
+    width: 354px;
+    margin: 0 10px;
+  }
   .top {
-    background: yellow;
+    //background: yellow;
     height: 50%;
     display: flex;
     justify-content: center;
@@ -179,13 +198,13 @@ export default {
       .youtube-video {
         width: 354px;
         height: 200px;
-        background: orangered;
+        //background: orangered;
         // add media queries, if screen smaller, adapt height to ratio 1.77
       }
     }
   }
   .bottom {
-    background: mediumseagreen;
+    //background: mediumseagreen;
     width: 100%;
     height: 50%;
   }
