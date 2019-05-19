@@ -8,12 +8,16 @@
           <span class="name">{{ artist.name }},</span>
           <span class="albums" v-for="(album, indexAlbum) in artist.albums" :key="album.title">
             <span class="title" v-if="indexAlbum === 0">{{ album.title }}</span>
-            <span v-else>,&nbsp;<span class="title-without-coma">{{ album.title }}</span>
+            <span v-else>
+              ,&nbsp;
+              <span class="title-without-coma">{{ album.title }}</span>
             </span>
           </span>
           <span class="songs" v-for="(song, indexSong) in artist.songs" :key="song.title">
             <span class="title" v-if="indexSong === 0">{{ song.title }}</span>
-            <span v-else>,&nbsp;<span class="title-without-coma">{{ song.title }}</span>
+            <span v-else>
+              ,&nbsp;
+              <span class="title-without-coma">{{ song.title }}</span>
             </span>
           </span>
         </div>
@@ -27,8 +31,21 @@
       </div>
     </div>
     <div class="right">
-      <div class="top"></div>
-      <div class="bottom-right"></div>
+      <div class="top">
+        <div class="wrapper">
+          <div class="youtube-video">
+            <iframe
+              id="ytplayer"
+              type="text/html"
+              width="354"
+              height="200"
+              src="http://www.youtube.com/embed/9HUV5a7MgS4"
+              frameborder="0"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="bottom"></div>
     </div>
   </div>
 </template>
@@ -73,9 +90,9 @@ export default {
 }
 
 .left {
-  //background: #eee;
-  width: 500px;
-  padding-right: 20px;
+  background: #eee;
+  width: 50%;
+  margin: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -147,8 +164,30 @@ export default {
 }
 
 .right {
-  //background: #ccc;
-  width: 500px;
-  padding-left: 20px;
+  background: #ccc;
+  width: 50%;
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  .top {
+    background: yellow;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .wrapper {
+      .youtube-video {
+        width: 354px;
+        height: 200px;
+        background: orangered;
+        // add media queries, if screen smaller, adapt height to ratio 1.77
+      }
+    }
+  }
+  .bottom {
+    background: mediumseagreen;
+    width: 100%;
+    height: 50%;
+  }
 }
 </style>

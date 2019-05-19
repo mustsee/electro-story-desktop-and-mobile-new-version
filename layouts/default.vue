@@ -35,7 +35,7 @@ html {
 
 .container {
   width: 1040px;
-  padding: 50px 20px;
+  padding: 50px 0;
   display: flex;
   /*background: azure;*/
 }
