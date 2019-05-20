@@ -1,23 +1,37 @@
 <template>
   <div class="content">
     <div class="left">
-      <div>
+      <div class="discography-wrapper">
         <div class="chapter">chapter {{ chapter }}</div>
         <div class="genre">{{ genre }}</div>
         <div class="artist" v-for="(artist, indexArtist) in artists" :key="indexArtist">
           <span class="name">{{ artist.name }},</span>
           <span class="albums" v-for="(album, indexAlbum) in artist.albums" :key="album.title">
-            <span class="title" v-if="indexAlbum === 0">{{ album.title }}</span>
+            <span
+              class="title"
+              @click="displayPiece(artist.name, album.title)"
+              v-if="indexAlbum === 0"
+            >{{ album.title }}</span>
             <span v-else>
               ,&nbsp;
-              <span class="title-without-coma">{{ album.title }}</span>
+              <span
+                class="title-without-coma"
+                @click="displayPiece(artist.name, album.title)"
+              >{{ album.title }}</span>
             </span>
           </span>
           <span class="songs" v-for="(song, indexSong) in artist.songs" :key="song.title">
-            <span class="title" v-if="indexSong === 0">{{ song.title }}</span>
+            <span
+              class="title"
+              @click="displayPiece(artist.name, song.title)"
+              v-if="indexSong === 0"
+            >{{ song.title }}</span>
             <span v-else>
               ,&nbsp;
-              <span class="title-without-coma">{{ song.title }}</span>
+              <span
+                class="title-without-coma"
+                @click="displayPiece(artist.name, song.title)"
+              >{{ song.title }}</span>
             </span>
           </span>
         </div>
@@ -32,26 +46,60 @@
     </div>
     <div class="right">
       <div class="top">
-        <div class="wrapper">
+        <div class="nextAndPreviousYoutubeVideoButtons">
+          <div class="previous">prev</div>
+          <div class="next">next</div>
+        </div>
+        <div class="videoWrapper">
           <div class="youtube-video">
             <iframe
               id="ytplayer"
               type="text/html"
               width="354"
               height="200"
-              src="http://www.youtube.com/embed/9HUV5a7MgS4"
+              :src="videoFullURL"
               frameborder="0"
             />
           </div>
         </div>
+        <div class="nextAndPreviousPlaylist">
+          <div class="previous">|&lt;</div>
+          <div class="trackNumber">{{ trackNumber }} / {{ tracksNumber }}</div>
+          <div class="next">&gt;|</div>
+        </div>
       </div>
-      <div class="bottom"></div>
+      <div class="bottom">
+        <div class="wrapper">
+          <div class="book">
+            <div class="information">
+              <span class="icon">i</span>
+            </div>
+            <div class="image">
+              <img
+                src="/modulations-2.jpg"
+                height="auto"
+                width="200px"
+                alt="cover of the book modulations, about electronic music history"
+              >
+            </div>
+          </div>
+          <div class="menu-wrapper">
+            <div class="menu">
+              <span class="icon">A</span>
+              <span class="icon">B</span>
+              <span class="icon">C</span>
+              <span class="icon">D</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import musicData from "./../data/musicData";
+import { getUrl, getFormattedVideosData } from "./../helpers/youtube";
 
 export default {
   data() {
@@ -61,8 +109,18 @@ export default {
       chapter: "I",
       genre: musicData.music[0].musicGenre,
       artists: musicData.music[0].artists,
-      numberOfChapters: musicData.music.length
+      numberOfChapters: musicData.music.length,
+      videos: [],
+      src: "http://www.youtube.com/embed/",
+      videoId: "4SwCObj4Ahk",
+      trackNumber: 0,
+      tracksNumber: 0
     };
+  },
+  computed: {
+    videoFullURL() {
+      return this.src + this.videoId;
+    }
   },
   methods: {
     handlePrevious() {
@@ -77,6 +135,15 @@ export default {
       this.chapter = this.chapters[this.index];
       this.genre = musicData.music[this.index].musicGenre;
       this.artists = musicData.music[this.index].artists;
+    },
+    displayPiece(artistName, pieceName) {
+      const URL = getUrl(artistName, pieceName);
+      const youtubeAPISearchResults = this.$axios.get(URL).then(res => {
+        const results = res.data.items;
+        this.videos = getFormattedVideosData(results);
+        this.videoId = this.videos[0].videos[0].videoId;
+        this.videoTitle = this.videos[0].videos[0].title;
+      });
     }
   },
   mounted() {}
@@ -85,6 +152,7 @@ export default {
 
 <style <style lang="scss" scoped>
 .content {
+  // Ajouter style pour IPAD pro, si height > width..., aspect ratioaspect-ratio
   display: flex;
   width: 100%;
   @media (max-width: 788px) {
@@ -147,7 +215,8 @@ export default {
       }
     }
   }
-  .pagination { // remonter la pagination au niveau du chapitre quand @media < 788px
+  .pagination {
+    // remonter la pagination au niveau du chapitre quand @media < 788px
     display: flex;
     justify-content: flex-end;
     margin-top: 50px;
@@ -189,12 +258,38 @@ export default {
     margin: 0 10px;
   }
   .top {
-    //background: yellow;
+    //background: #ccc;
     height: 50%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    .wrapper {
+    align-items: flex-end;
+    @media (max-width: 788px) {
+      align-items: center;
+    }
+    .nextAndPreviousYoutubeVideoButtons {
+      width: 354px;
+      background: #fafafa;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      display: flex;
+      justify-content: center;
+      .previous,
+      .next {
+        background: #fff;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        margin: 10px 5px;
+        padding: 0 16px;
+        height: 32px;
+        border: 0.5px solid #d1d1d1;
+        font-size: 13px;
+        border-radius: 25px;
+        font-family: "Karla", sans-serif;
+      }
+    }
+    .videoWrapper {
       .youtube-video {
         width: 354px;
         height: 200px;
@@ -202,11 +297,90 @@ export default {
         // add media queries, if screen smaller, adapt height to ratio 1.77
       }
     }
+    .nextAndPreviousPlaylist {
+      background: #f1f1f1;
+      display: flex;
+      width: 354px;
+      justify-content: space-between;
+      font-family: "Karla", sans-serif;
+      .previous,
+      .next,
+      .trackNumber {
+        background: #fff;
+        border: 0.5px solid #d1d1d1;
+        height: 32px;
+        padding: 0 16px;
+        margin: 10px 5px;
+        display: flex;
+        align-items: center;
+      }
+    }
   }
   .bottom {
-    //background: mediumseagreen;
-    width: 100%;
+    display: flex;
+    justify-content: flex-end;
     height: 50%;
+    align-items: center;
+    .wrapper {
+      //background: green;
+      display: flex;
+      justify-content: space-between;
+      width: 354px;
+      .book {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        //background: yellow;
+      }
+      .information {
+        height: 258.5px;
+        margin-bottom: 5px;
+        background: #f1f1f1;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon {
+          border: 0.5px solid #d1d1d1;
+          height: 32px;
+          width: 32px;
+          border-radius: 50%;
+          background: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-family: "Karla", sans-serif;
+          margin: 10px 5px;
+        }
+      }
+      .menu-wrapper {
+        display: flex;
+        align-items: center;
+        .menu {
+          height: 258.5px;
+          margin-bottom: 5px;
+          background: #fafafa;
+          //border-top-left-radius: 10px;
+          //border-bottom-left-radius: 10px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .icon {
+            border: 0.5px solid #d1d1d1;
+            height: 40px;
+            width: 30px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Karla", sans-serif;
+            margin: 5px 10px;
+          }
+        }
+      }
+    }
   }
 }
 </style>
