@@ -2,46 +2,28 @@
   <div class="content">
     <div class="left">
       <div class="discography-wrapper">
-        <div class="chapter">chapter {{ chapter }}</div>
+        <div class="chapter-wrapper">
+          <div class="chapter">chapter {{ chapter }}</div>
+          <div class="pagination">
+            <div :class="[ index === 0 ? 'disabled' : '', 'previous']" @click="handlePrevious">&lt;</div>
+            <div
+              :class="[ index === numberOfChapters - 1 ? 'disabled' : '', 'next']"
+              @click="handleNext"
+            >&gt;</div>
+          </div>
+        </div>
         <div class="genre">{{ genre }}</div>
         <div class="artist" v-for="(artist, indexArtist) in artists" :key="indexArtist">
-          <span class="name">{{ artist.name }},</span>
-          <span class="albums" v-for="(album, indexAlbum) in artist.albums" :key="album.title">
-            <span
-              class="title"
-              @click="displayPiece(artist.name, album.title)"
-              v-if="indexAlbum === 0"
-            >{{ album.title }}</span>
-            <span v-else>
-              ,&nbsp;
-              <span
-                class="title-without-coma"
-                @click="displayPiece(artist.name, album.title)"
-              >{{ album.title }}</span>
-            </span>
-          </span>
-          <span class="songs" v-for="(song, indexSong) in artist.songs" :key="song.title">
-            <span
-              class="title"
-              @click="displayPiece(artist.name, song.title)"
-              v-if="indexSong === 0"
-            >{{ song.title }}</span>
-            <span v-else>
-              ,&nbsp;
-              <span
-                class="title-without-coma"
-                @click="displayPiece(artist.name, song.title)"
-              >{{ song.title }}</span>
-            </span>
-          </span>
+          <div class="name">{{ artist.name }}</div>
+          <div class="pieces">
+            <div class="albums" v-for="(album) in artist.albums" :key="album.title">
+              <div class="title" @click="displayPiece(artist.name, album.title)">{{ album.title }}</div>
+            </div>
+            <div class="songs" v-for="(song) in artist.songs" :key="song.title">
+              <div class="title" @click="displayPiece(artist.name, song.title)">{{ song.title }}</div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="pagination">
-        <div :class="[ index === 0 ? 'disabled' : '', 'previous']" @click="handlePrevious">&lt;</div>
-        <div
-          :class="[ index === numberOfChapters - 1 ? 'disabled' : '', 'next']"
-          @click="handleNext"
-        >&gt;</div>
       </div>
     </div>
     <div class="right">
@@ -174,17 +156,47 @@ export default {
   @media (max-width: 520px) {
     width: 334px;
   }
-  .chapter {
-    //background: yellow;
-    margin-bottom: 20px;
-    font-family: "Rubik", sans-serif;
+  .chapter-wrapper {
     display: flex;
-    justify-content: space-between;
+    margin-bottom: 20px;
+    display: flex;
     align-items: center;
-    font-size: 40px;
-    font-weight: 300;
-    text-transform: capitalize;
-    font-style: italic;
+    justify-content: space-between;
+    .chapter {
+      //background: yellow;
+      font-family: "Rubik", sans-serif;
+      display: flex;
+      align-items: center;
+      font-size: 40px;
+      font-weight: 300;
+      text-transform: capitalize;
+      font-style: italic;
+    }
+    .pagination {
+      display: flex;
+      .previous,
+      .next {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        width: 50px;
+        height: 30px;
+        border: 0.5px solid black;
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+      .previous {
+        margin-right: 10px;
+      }
+      .disabled {
+        pointer-events: none;
+        opacity: 0.5;
+        background: #ddd;
+      }
+    }
   }
   .genre {
     display: flex;
@@ -198,46 +210,35 @@ export default {
     letter-spacing: 1px;
   }
   .artist {
-    //background: orange;
     margin-bottom: 5px;
     font-family: "Karla", sans-serif;
     letter-spacing: 0.5px;
+    display: flex;
+    text-align: right;
     .name {
       text-transform: uppercase;
+      width: 50%;
+      padding-right: 10px;
+    }
+    .pieces {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border: 0.5px solid #000;
     }
     .albums,
     .songs {
       font-style: italic;
+      width: 100%;
+      padding: 0 1px;
       .title:hover,
       .title-without-coma:hover {
         cursor: pointer;
         text-decoration: underline;
       }
-    }
-  }
-  .pagination {
-    // remonter la pagination au niveau du chapitre quand @media < 788px
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 50px;
-    .previous,
-    .next {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      &:hover {
-        cursor: pointer;
-        text-decoration: underline;
-      }
-    }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.5;
-      background: #ddd;
     }
   }
 }
@@ -295,6 +296,9 @@ export default {
         height: 200px;
         //background: orangered;
         // add media queries, if screen smaller, adapt height to ratio 1.77
+      }
+      .html5-video-container video {
+        height: 200px;
       }
     }
     .nextAndPreviousPlaylist {
