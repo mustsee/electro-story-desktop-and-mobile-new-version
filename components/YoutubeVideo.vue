@@ -6,6 +6,8 @@
     </div>
     <div class="video-wrapper">
       <iframe
+        v-if="!isVideoLoading"
+        title="youtube player"
         id="ytplayer"
         type="text/html"
         width="354"
@@ -13,6 +15,8 @@
         :src="src"
         frameborder="0"
       />
+      <div class="loading" v-else-if="!errorLoadingVideo">Loading...</div>
+      <div class="loading" v-else>{{ errorLoadingVideo }}</div>
     </div>
     <div class="playlist-buttons">
       <div class="btn disabled">|&lt;</div>
@@ -24,7 +28,7 @@
 
 <script>
 export default {
-  props: ["src", "trackNumber", "tracksNumber"]
+  props: ["src", "trackNumber", "tracksNumber", "isVideoLoading", "errorLoadingVideo"]
 };
 </script>
 
@@ -66,6 +70,18 @@ export default {
   height: 200px;
   iframe {
     height: 200px;
+  }
+  .loading {
+    width: 353px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Rubik";
+    font-size: 25px;
+    font-weight: 300;
+    border-left: 0.5px solid #f1f1f1;
+    border-right: 0.5px solid #f1f1f1;
   }
 }
 </style>

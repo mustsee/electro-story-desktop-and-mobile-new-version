@@ -16,7 +16,12 @@
       />
     </div>
     <div class="video-menu-wrapper">
-      <youtube-video class="video-component-wrapper" :src="videoFullURL"/>
+      <youtube-video
+        class="video-component-wrapper"
+        :src="videoFullURL"
+        :isVideoLoading="isVideoLoading"
+        :errorLoadingVideo="errorLoadingVideo"
+      />
       <book-menu/>
     </div>
   </div>
@@ -48,7 +53,10 @@ export default {
       videoId: "B2U-WKmeJSM",
       trackNumber: 0,
       tracksNumber: 0,
-      isActive: musicData.music[0].artists[0].albums[0].title
+      isActive: musicData.music[0].artists[0].albums[0].title,
+      isVideoLoading: false,
+      currentPieceName: musicData.music[0].artists[0].albums[0].title,
+      errorLoadingVideo: ""
     };
   },
   computed: {
@@ -71,16 +79,27 @@ export default {
       this.artists = musicData.music[this.index].artists;
     },
     displayPiece(artistName, pieceName) {
+      this.errorLoadingVideo = "";
+      if (pieceName === this.currentPieceName) return;
+      this.currentPieceName = pieceName;
+      this.isActive = pieceName;
+      this.isVideoLoading = true;
       const URL = getUrl(artistName, pieceName);
-      const youtubeAPISearchResults = this.$axios.get(URL).then(res => {
-        const results = res.data.items;
-        this.videos = getFormattedVideosData(results);
-        this.videoId = this.videos[0].videos[0].videoId;
-        this.videoTitle = this.videos[0].videos[0].title;
-        this.isActive = pieceName;
-      });
+      const youtubeAPISearchResults = this.$axios
+        .get(URL)
+        .then(res => {
+          const results = res.data.items;
+          this.videos = getFormattedVideosData(results);
+          this.videoId = this.videos[0].videos[0].videoId;
+          this.videoTitle = this.videos[0].videos[0].title;
+          setTimeout(() => {this.isVideoLoading = false}, 500);
+        })
+        .catch(err => {
+          this.isVideoLoading = false;
+          this.errorLoadingVideo = "An error occured";
+        });
     }
-  },
+  }
 };
 </script>
 
