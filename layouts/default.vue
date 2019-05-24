@@ -6,7 +6,7 @@
 
 <style <style lang="scss">
 html {
-  font-family: sans-serif;
+  font-family: "Karla", sans-serif;
   font-size: 17px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;

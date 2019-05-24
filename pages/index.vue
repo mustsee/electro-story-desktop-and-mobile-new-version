@@ -13,6 +13,9 @@
         :modidfyContent="modifyContent"
         :index="index"
         :isActive="isActive"
+        :handleClickOnArtist="handleClickOnArtist"
+        :availablePieces="availablePieces"
+        :currentArtistName="currentArtistName"
       />
     </div>
     <div class="video-menu-wrapper">
@@ -22,13 +25,13 @@
         :isVideoLoading="isVideoLoading"
         :errorLoadingVideo="errorLoadingVideo"
       />
-      <book-menu/>
+      <main-menu/>
     </div>
   </div>
 </template>
 
 <script>
-import BookMenu from "./../components/BookMenu";
+import MainMenu from "./../components/MainMenu";
 import Discography from "./../components/Discography";
 import YoutubeVideo from "./../components/YoutubeVideo";
 import musicData from "./../data/musicData";
@@ -36,7 +39,7 @@ import { getUrl, getFormattedVideosData } from "./../helpers/youtube";
 
 export default {
   components: {
-    "book-menu": BookMenu,
+    "main-menu": MainMenu,
     discography: Discography,
     "youtube-video": YoutubeVideo
   },
@@ -56,7 +59,9 @@ export default {
       isActive: musicData.music[0].artists[0].albums[0].title,
       isVideoLoading: false,
       currentPieceName: musicData.music[0].artists[0].albums[0].title,
-      errorLoadingVideo: ""
+      currentArtistName: musicData.music[0].artists[0].name,
+      errorLoadingVideo: "",
+      availablePieces: {}
     };
   },
   computed: {
@@ -81,8 +86,10 @@ export default {
     displayPiece(artistName, pieceName) {
       this.errorLoadingVideo = "";
       if (pieceName === this.currentPieceName) return;
+      this.currentArtistName = artistName;
       this.currentPieceName = pieceName;
       this.isActive = pieceName;
+      return; // Youtube quota exceeded
       this.isVideoLoading = true;
       const URL = getUrl(artistName, pieceName);
       const youtubeAPISearchResults = this.$axios
@@ -92,12 +99,18 @@ export default {
           this.videos = getFormattedVideosData(results);
           this.videoId = this.videos[0].videos[0].videoId;
           this.videoTitle = this.videos[0].videos[0].title;
-          setTimeout(() => {this.isVideoLoading = false}, 500);
+          setTimeout(() => {
+            this.isVideoLoading = false;
+          }, 500);
         })
         .catch(err => {
           this.isVideoLoading = false;
           this.errorLoadingVideo = "An error occured";
         });
+    },
+    handleClickOnArtist(genreIndex, artistNameIndex) {
+      this.availablePieces =
+        musicData.music[genreIndex].artists[artistNameIndex];
     }
   }
 };
@@ -115,10 +128,15 @@ export default {
 
 .discography-wrapper {
   width: 354px;
+  min-height: 711px;
   padding-top: 0;
   padding-bottom: 50px;
   //background: lightcoral;
+  @media (min-width: 601px) {
+    min-height: 671px;;
+  }
   @media (min-width: 868px) {
+    height: initial;
     padding-top: 50px;
     padding-left: 30px;
     padding-right: 50px;

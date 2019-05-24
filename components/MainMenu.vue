@@ -21,7 +21,10 @@
         <div>Wrote a short poem ?</div>
         <div>Draw something silly?</div>
         <div>Painted a tiny picture ?</div>
-        <div>Write me an email at thomas.sypniewski[@]gmail.com</div>
+        <div>
+          Write me an email at
+          <span>thomas.sypniewski[@]gmail.com</span>
+        </div>
         <div>Would be happy to present it in this little square.</div>
         <div>:)</div>
       </div>
@@ -31,7 +34,10 @@
         <div>A thank you note ?</div>
         <div>A problem or an idea to make this website better ?</div>
         <div>Want some more ?</div>
-        <div>Write me an email at thomas.sypniewski[@]gmail.com</div>
+        <div>
+          Write me an email at
+          <span>thomas.sypniewski[@]gmail.com</span>
+        </div>
         <div>Would be delighted to read it.</div>
       </div>
     </div>
@@ -65,12 +71,12 @@ export default {
       this.isMenuCActive = false;
     },
     showMenuB() {
-      this.isMenuBActive = !this.isMenuBActive;
+      this.isMenuBActive = true;
       this.isMenuAActive = false;
       this.isMenuCActive = false;
     },
     showMenuC() {
-      this.isMenuCActive = !this.isMenuCActive;
+      this.isMenuCActive = true;
       this.isMenuBActive = false;
       this.isMenuAActive = false;
     }
@@ -120,19 +126,24 @@ export default {
     }
   }
   .informations {
+    user-select: text;
     height: 257.5px;
     width: 261px;
     padding: 15px 10px;
     font-size: 14px;
     border: 0.5px solid #d1d1d1;
     text-align: center;
+    font-family: "Karla", sans-serif;
     h1 {
       text-align: center;
       font-size: 15px;
       margin-bottom: 15px;
+      text-decoration: underline;
     }
     div {
       margin: 10px;
+      span {
+      }
     }
   }
   .menu {

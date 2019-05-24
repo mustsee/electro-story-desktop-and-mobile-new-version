@@ -11,14 +11,42 @@
       </div>
     </div>
     <div class="genre">{{ genre }}</div>
-    <div class="artist" v-for="(artist, indexArtist) in artists" :key="indexArtist">
-      <div class="name">{{ artist.name }}</div>
-      <div class="pieces medium-screen">
-        <div class="albums" v-for="(album) in artist.albums" :key="album.title">
-          <div :class="[ isActive === album.title ? 'active' : '', 'title']" @click="displayPiece(artist.name, album.title)">{{ album.title }}</div>
+    <div class="artists">
+      <div class="artist" v-for="(artist, indexArtist) in artists" :key="indexArtist">
+        <div class="name medium-screen">{{ artist.name }}</div>
+        <div class="pieces medium-screen">
+          <div class="albums" v-for="(album) in artist.albums" :key="album.title">
+            <div
+              :class="[ isActive === album.title ? 'active' : '', 'title']"
+              @click="displayPiece(artist.name, album.title)"
+            >{{ album.title }}</div>
+          </div>
+          <div class="songs" v-for="(song) in artist.songs" :key="song.title">
+            <div
+              :class="[ isActive === song.title ? 'active' : '', 'title']"
+              @click="displayPiece(artist.name, song.title)"
+            >{{ song.title }}</div>
+          </div>
         </div>
-        <div class="songs" v-for="(song) in artist.songs" :key="song.title">
-          <div :class="[ isActive === song.title ? 'active' : '', 'title']" @click="displayPiece(artist.name, song.title)">{{ song.title }}</div>
+        <div
+          :class="[ artist.name === currentArtistName ? 'active-name' : '', 'name small-screen-name']"
+          @click="handleClickOnArtist(index, indexArtist)"
+        >{{ artist.name }}</div>
+        <div class="small-screen">
+          <div class="pieces" v-if="artist.name === availablePieces.name">
+            <div class="albums" v-for="(album) in availablePieces.albums" :key="album.title">
+              <div
+                :class="[ isActive === album.title ? 'active-small-screen' : '', 'title']"
+                @click="displayPiece(availablePieces.name, album.title)"
+              >{{ album.title }}</div>
+            </div>
+            <div class="songs" v-for="(song) in availablePieces.songs" :key="song.title">
+              <div
+                :class="[ isActive === song.title ? 'active-small-screen' : '', 'title']"
+                @click="displayPiece(availablePieces.name, song.title)"
+              >{{ song.title }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -38,8 +66,11 @@ export default {
     "handleNext",
     "modifyContent",
     "index",
-    "isActive"
-  ],
+    "isActive",
+    "handleClickOnArtist",
+    "availablePieces",
+    "currentArtistName"
+  ]
 };
 </script>
 
@@ -101,6 +132,17 @@ export default {
     width: 50%;
     padding: 0 10px;
   }
+  .small-screen-name {
+    border-right: 1px solid black;
+    background: yellow;
+    cursor: pointer;
+    @media (max-width: 600px) {
+      min-height: 48px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
   .pieces {
     width: 50%;
     display: flex;
@@ -123,12 +165,50 @@ export default {
 }
 
 .active {
-  background: greenyellow;
+  background: red;
+}
+
+.active-small-screen {
+  text-decoration: underline;
+}
+
+.active-name {
+  background: #fff !important;
 }
 
 .medium-screen {
   @media (max-width: 994px) {
     display: none !important;
+  }
+}
+
+.artists {
+  position: relative;
+}
+
+.small-screen,
+.small-screen-name {
+  @media (min-width: 995px) {
+    display: none !important;
+  }
+}
+
+.small-screen {
+  //background: greenyellow;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .pieces {
+    border: none;
+    width: 100%;
+    //background: blue;
+    border-bottom: 1px solid black;
+    @media (max-width: 600px) {
+      .title {
+        padding: 10px 0;
+      }
+    }
   }
 }
 </style>
