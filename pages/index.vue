@@ -36,7 +36,12 @@ import MainMenu from "./../components/MainMenu";
 import Discography from "./../components/Discography";
 import YoutubeVideo from "./../components/YoutubeVideo";
 import musicData from "./../data/musicData";
-import { getUrl, getFormattedVideosData } from "./../helpers/youtube";
+import {
+  getSearchUrl,
+  getFormattedVideoData,
+  getPlaylistItemsUrl,
+  getFormattedPlaylistData
+} from "./../helpers/youtube";
 
 export default {
   components: {
@@ -92,23 +97,51 @@ export default {
       this.isActive = pieceName;
       return;
       this.isVideoLoading = true;
-      const URL = getUrl(artistName, pieceName);
-      const youtubeAPISearchResults = this.$axios
-        .get(URL)
-        .then(res => {
-          const results = res.data.items;
-          this.videos = getFormattedVideosData(results);
+      const URL = getSearchUrl(artistName, pieceName);
+      this.$axios.get(URL).then(res => {
+        const results = res.data.items;
+        this.handleVideosAndPlaylists(results).then(res => {
+          this.videos = res;
+          this.isVideoLoading = false;
+          console.log("this.videos", this.videos);
+          /*
           this.videoId = this.videos[0].videos[0].videoId;
           this.videoTitle = this.videos[0].videos[0].title;
-          setTimeout(() => {
-            this.isVideoLoading = false;
-          }, 500);
-        })
-        .catch(err => {
-          this.isVideoLoading = false;
-          this.errorLoadingVideo = "An error occured";
-          console.log('err', err);
+          */
         });
+      }).then(err => {
+        console.log('err : ', err);
+        this.errorLoadingVideo = "Error loading video"
+      });
+    },
+    handleVideosAndPlaylists(results) {
+      return new Promise(resolve => {
+        let videos = [];
+        let types = [];
+        results.forEach((result, i) => {
+          if (result.id.kind === "youtube#video") {
+            types.push("video");
+            videos[i] = getFormattedVideoData(result);
+            if (types.length === results.length) resolve(videos);
+          } else if (result.id.kind === "youtube#playlist") {
+            this.findVideoIdsOfPlaylist(result).then(res => {
+              types.push("playlist");
+              videos[i] = res;
+              if (types.length === results.length) resolve(videos);
+            });
+          }
+        });
+      });
+    },
+    findVideoIdsOfPlaylist(result) {
+      return new Promise(resolve => {
+        const { playlistId } = result.id;
+        const URL = getPlaylistItemsUrl(playlistId);
+        this.$axios.get(URL).then(res => {
+          const videos = getFormattedPlaylistData(res, playlistId);
+          resolve(videos);
+        });
+      });
     },
     handleClickOnArtist(genreIndex, artistNameIndex) {
       this.availablePieces =
@@ -135,7 +168,7 @@ export default {
   padding-bottom: 50px;
   //background: lightcoral;
   @media (min-width: 601px) {
-    min-height: 671px;;
+    min-height: 671px;
   }
   @media (min-width: 868px) {
     height: initial;
