@@ -161,8 +161,8 @@ export default {
           });
         })
         .catch(err => {
-          console.log("err : ", err);
-          if (err.error.code === 403) this.errorLoadingVideo = "Youtube quota exceeded"
+          console.log("err : ", error.response);
+          if (err.response.code === 403) this.errorLoadingVideo = "Youtube quota exceeded"
           else this.errorLoadingVideo = "Error loading video";
         });
     },
