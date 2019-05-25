@@ -33,21 +33,21 @@
     <div class="artists small-screen">
       <div class="artist" v-for="(artist, indexArtist) in artists" :key="indexArtist">
         <div
-          :class="[ artist.name === currentArtistName ? 'active-name' : '', 'name']"
+          :class="[ artist.name === currentArtistName && indexArtist === artistActiveNameIndex ? 'active-name' : '', 'name']"
           @click="handleClickOnArtist(chapterIndex, indexArtist)"
         >{{ artist.name }}</div>
-        <div class="pieces" v-if="artist.name === availablePieces.name">
+        <div class="pieces" v-if="artist.name === availablePieces.name && indexArtist === artistNameIndex">
           <div class="border-style">
             <div class="albums" v-for="(album) in availablePieces.albums" :key="album.title">
               <div
                 :class="[ isActive === album.title ? 'active' : '', 'title']"
-                @click="displayPiece(availablePieces.name, album.title)"
+                @click="displayPiece(availablePieces.name, album.title, indexArtist)"
               >{{ album.title }}</div>
             </div>
             <div class="songs" v-for="(song) in availablePieces.songs" :key="song.title">
               <div
                 :class="[ isActive === song.title ? 'active' : '', 'title']"
-                @click="displayPiece(availablePieces.name, song.title)"
+                @click="displayPiece(availablePieces.name, song.title, indexArtist)"
               >{{ song.title }}</div>
             </div>
           </div>
@@ -74,8 +74,10 @@ export default {
     "handleClickOnArtist",
     "availablePieces",
     "currentArtistName",
-    "currentPieceName"
-  ]
+    "currentPieceName",
+    "artistActiveNameIndex",
+    "artistNameIndex"
+  ],
 };
 </script>
 

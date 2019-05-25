@@ -17,6 +17,8 @@
         :availablePieces="availablePieces"
         :currentArtistName="currentArtistName"
         :currentPieceName="currentPieceName"
+        :artistNameIndex="artistNameIndex"
+        :artistActiveNameIndex="artistActiveNameIndex"
       />
     </div>
     <div class="video-menu-wrapper">
@@ -77,7 +79,10 @@ export default {
       currentPieceName: musicData.music[0].artists[0].albums[0].title,
       currentArtistName: musicData.music[0].artists[0].name,
       errorLoadingVideo: "",
-      availablePieces: {}
+      availablePieces: {},
+      currentActiveArtistIndex: 0,
+      artistNameIndex: 0,
+      artistActiveNameIndex: 0,
     };
   },
   computed: {
@@ -134,14 +139,16 @@ export default {
       this.genre = musicData.music[this.chapterIndex].musicGenre;
       this.artists = musicData.music[this.chapterIndex].artists;
     },
-    displayPiece(artistName, pieceName) {
+    displayPiece(artistName, pieceName, artistIndex) {
       this.errorLoadingVideo = "";
       if (pieceName === this.currentPieceName) return;
       this.currentArtistName = artistName;
       this.currentPieceName = pieceName;
       this.isActive = pieceName;
       this.isVideoLoading = true;
+      this.artistActiveNameIndex = artistIndex;
       const URL = getSearchUrl(artistName, pieceName);
+      return;
       this.$axios
         .get(URL)
         .then(res => {
@@ -191,7 +198,11 @@ export default {
     handleClickOnArtist(genreIndex, artistNameIndex) {
       this.availablePieces =
         musicData.music[genreIndex].artists[artistNameIndex];
+      this.artistNameIndex = artistNameIndex;
     }
+  },
+  mounted() {
+    this.availablePieces = musicData.music[0].artists[0];
   }
 };
 </script>
