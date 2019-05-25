@@ -16,6 +16,7 @@
         :handleClickOnArtist="handleClickOnArtist"
         :availablePieces="availablePieces"
         :currentArtistName="currentArtistName"
+        :currentPieceName="currentPieceName"
       />
     </div>
     <div class="video-menu-wrapper">
@@ -89,7 +90,7 @@ export default {
       this.currentArtistName = artistName;
       this.currentPieceName = pieceName;
       this.isActive = pieceName;
-      return; // Youtube quota exceeded
+      return;
       this.isVideoLoading = true;
       const URL = getUrl(artistName, pieceName);
       const youtubeAPISearchResults = this.$axios
@@ -106,6 +107,7 @@ export default {
         .catch(err => {
           this.isVideoLoading = false;
           this.errorLoadingVideo = "An error occured";
+          console.log('err', err);
         });
     },
     handleClickOnArtist(genreIndex, artistNameIndex) {

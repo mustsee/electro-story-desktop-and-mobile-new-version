@@ -11,10 +11,10 @@
       </div>
     </div>
     <div class="genre">{{ genre }}</div>
-    <div class="artists">
+    <div class="artists medium-screen">
       <div class="artist" v-for="(artist, indexArtist) in artists" :key="indexArtist">
-        <div class="name medium-screen">{{ artist.name }}</div>
-        <div class="pieces medium-screen">
+        <div class="name">{{ artist.name }}</div>
+        <div class="pieces">
           <div class="albums" v-for="(album) in artist.albums" :key="album.title">
             <div
               :class="[ isActive === album.title ? 'active' : '', 'title']"
@@ -28,24 +28,26 @@
             >{{ song.title }}</div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="artists small-screen">
+      <div class="artist" v-for="(artist, indexArtist) in artists" :key="indexArtist">
         <div
-          :class="[ artist.name === currentArtistName ? 'active-name' : '', 'name small-screen-name']"
+          :class="[ artist.name === currentArtistName ? 'active-name' : '', 'name']"
           @click="handleClickOnArtist(index, indexArtist)"
         >{{ artist.name }}</div>
-        <div class="small-screen">
-          <div class="pieces" v-if="artist.name === availablePieces.name">
-            <div class="albums" v-for="(album) in availablePieces.albums" :key="album.title">
-              <div
-                :class="[ isActive === album.title ? 'active-small-screen' : '', 'title']"
-                @click="displayPiece(availablePieces.name, album.title)"
-              >{{ album.title }}</div>
-            </div>
-            <div class="songs" v-for="(song) in availablePieces.songs" :key="song.title">
-              <div
-                :class="[ isActive === song.title ? 'active-small-screen' : '', 'title']"
-                @click="displayPiece(availablePieces.name, song.title)"
-              >{{ song.title }}</div>
-            </div>
+        <div class="pieces" v-if="artist.name === availablePieces.name">
+          <div class="albums" v-for="(album) in availablePieces.albums" :key="album.title">
+            <div
+              :class="[ isActive === album.title ? 'active' : '', 'title']"
+              @click="displayPiece(availablePieces.name, album.title)"
+            >{{ album.title }}</div>
+          </div>
+          <div class="songs" v-for="(song) in availablePieces.songs" :key="song.title">
+            <div
+              :class="[ isActive === song.title ? 'active' : '', 'title']"
+              @click="displayPiece(availablePieces.name, song.title)"
+            >{{ song.title }}</div>
           </div>
         </div>
       </div>
@@ -69,7 +71,8 @@ export default {
     "isActive",
     "handleClickOnArtist",
     "availablePieces",
-    "currentArtistName"
+    "currentArtistName",
+    "currentPieceName"
   ]
 };
 </script>
@@ -121,27 +124,16 @@ export default {
   font-weight: 700;
   letter-spacing: 1px;
 }
+
 .artist {
   margin-bottom: 5px;
-  font-family: "Karla", sans-serif;
   letter-spacing: 0.5px;
   display: flex;
-  text-align: right;
   .name {
+    text-align: right;
     text-transform: uppercase;
     width: 50%;
     padding: 0 10px;
-  }
-  .small-screen-name {
-    border-right: 1px solid black;
-    background: yellow;
-    cursor: pointer;
-    @media (max-width: 600px) {
-      min-height: 48px;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
   }
   .pieces {
     width: 50%;
@@ -150,7 +142,6 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 0.5px solid #000;
   }
   .albums,
   .songs {
@@ -164,51 +155,43 @@ export default {
   }
 }
 
-.active {
-  background: red;
-}
-
-.active-small-screen {
-  text-decoration: underline;
-}
-
-.active-name {
-  background: #fff !important;
-}
-
 .medium-screen {
   @media (max-width: 994px) {
     display: none !important;
   }
-}
-
-.artists {
-  position: relative;
-}
-
-.small-screen,
-.small-screen-name {
-  @media (min-width: 995px) {
-    display: none !important;
+  .pieces {
+    border: 0.5px solid #000;
+  }
+  .active {
+    background: red;
   }
 }
 
 .small-screen {
-  //background: greenyellow;
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @media (min-width: 995px) {
+    display: none !important;
+  }
+  .name {
+    border-right: 1px solid black;
+    background: yellow;
+    cursor: pointer;
+    @media (max-width: 600px) {
+      min-height: 48px;
+    }
+  }
   .pieces {
-    border: none;
-    width: 100%;
-    //background: blue;
     border-bottom: 1px solid black;
     @media (max-width: 600px) {
       .title {
         padding: 10px 0;
       }
     }
+  }
+  .active {
+    text-decoration: underline;
+  }
+  .active-name {
+    background: #fff;
   }
 }
 </style>

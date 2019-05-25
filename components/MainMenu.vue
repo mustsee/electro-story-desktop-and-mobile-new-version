@@ -1,42 +1,40 @@
 <template>
   <div class="wrapper">
     <div class="left">
-      <div class="information">
+      <div class="strip">
         <span v-show="isMenuAActive" class="icon" @mouseover="active" @click="active">i</span>
       </div>
       <img
         v-show="!showBookInformation && isMenuAActive"
-        src="/modulations-2.jpg"
+        src="/modulations-book-cover.jpg"
         height="auto"
         width="200px"
         alt="cover of the book modulations, about electronic music history"
       >
-      <div v-show="showBookInformation && isMenuAActive" class="informations">
+      <div v-show="showBookInformation && isMenuAActive" class="information">
         <h1>Modulations - A History of Electronic Music</h1>
         <div>Modulations is a 2000 book edited by Peter Shapiro. It's one of the major book on electronic music history and a companion piece to the documentary film Modulations: Cinema for the Ear.</div>
         <div>This website aims to be another companion, a facilitator for listening to the book's discography.</div>
       </div>
-      <div v-show="isMenuBActive" class="informations">
+      <div v-show="isMenuBActive" class="information">
         <h1>Featuring</h1>
         <div>Wrote a short poem ?</div>
         <div>Draw something silly?</div>
         <div>Painted a tiny picture ?</div>
         <div>
-          Write me an email at
-          <span>thomas.sypniewski[@]gmail.com</span>
+          Write me an email at thomas.sypniewski[@]gmail.com
         </div>
         <div>Would be happy to present it in this little square.</div>
         <div>:)</div>
       </div>
-      <div v-show="isMenuCActive" class="informations">
+      <div v-show="isMenuCActive" class="information">
         <h1>Get in touch</h1>
         <div>A comment ?</div>
         <div>A thank you note ?</div>
         <div>A problem or an idea to make this website better ?</div>
         <div>Want some more ?</div>
         <div>
-          Write me an email at
-          <span>thomas.sypniewski[@]gmail.com</span>
+          Write me an email at thomas.sypniewski[@]gmail.com
         </div>
         <div>Would be delighted to read it.</div>
       </div>
@@ -92,7 +90,6 @@ export default {
   width: 354px;
 }
 .icon {
-  font-family: "Karla", sans-serif;
   border: 0.5px solid #d1d1d1;
   background: #fff;
   display: flex;
@@ -106,14 +103,14 @@ export default {
 .right {
   display: flex;
   align-items: center;
-  .information,
+  .strip,
   .menu {
     height: 258.5px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .information {
+  .strip {
     background: #f1f1f1;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -125,7 +122,7 @@ export default {
       margin: 0 5px;
     }
   }
-  .informations {
+  .information {
     user-select: text;
     height: 257.5px;
     width: 261px;
@@ -133,7 +130,6 @@ export default {
     font-size: 14px;
     border: 0.5px solid #d1d1d1;
     text-align: center;
-    font-family: "Karla", sans-serif;
     h1 {
       text-align: center;
       font-size: 15px;
@@ -142,8 +138,6 @@ export default {
     }
     div {
       margin: 10px;
-      span {
-      }
     }
   }
   .menu {

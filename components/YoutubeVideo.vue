@@ -35,7 +35,6 @@ export default {
 <style lang="scss" scoped>
 .wrapper {
   width: 354px;
-  font-family: "Karla", sans-serif;
 }
 .btn {
   display: flex;
@@ -77,7 +76,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: "Rubik";
+    font-family: "Rubik", sans-serif;
     font-size: 25px;
     font-weight: 300;
     border-left: 0.5px solid #f1f1f1;
