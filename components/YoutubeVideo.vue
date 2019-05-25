@@ -1,8 +1,15 @@
 <template>
   <div class="wrapper">
     <div class="youtube-search-results-buttons">
-      <div class="btn disabled">prev</div>
-      <div class="btn disabled">next</div>
+      <div
+        :class="[!videosLength || videoIndex === 0 ? 'disabled' : '', 'btn']"
+        @click="handlePreviousYTResult"
+      >prev</div>
+      <div>video length : {{ videosLength }}, video index : {{ videoIndex }}</div>
+      <div
+        :class="[!videosLength || videoIndex === videosLength - 1 ? 'disabled' : '', 'btn']"
+        @click="handleNextYTResult"
+      >next</div>
     </div>
     <div class="video-wrapper">
       <iframe
@@ -19,16 +26,28 @@
       <div class="loading" v-else>{{ errorLoadingVideo }}</div>
     </div>
     <div class="playlist-buttons">
-      <div class="btn disabled">|&lt;</div>
-      <div class="btn track-number disabled">{{ trackNumber }} / {{ tracksNumber }}</div>
-      <div class="btn disabled">&gt;|</div>
+      <div :class="[ !tracksNumber ? 'disabled' : '' , 'btn']">|&lt;</div>
+      <div
+        :class="[ !tracksNumber ? 'disabled' : '', 'btn track-number']"
+      >{{ trackNumber }} / {{ tracksNumber }}</div>
+      <div :class="[ !tracksNumber ? 'disabled' :  '', 'btn']">&gt;|</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["src", "trackNumber", "tracksNumber", "isVideoLoading", "errorLoadingVideo"]
+  props: [
+    "src",
+    "trackNumber",
+    "tracksNumber",
+    "isVideoLoading",
+    "errorLoadingVideo",
+    "handlePreviousYTResult",
+    "handleNextYTResult",
+    "videosLength",
+    "videoIndex"
+  ]
 };
 </script>
 

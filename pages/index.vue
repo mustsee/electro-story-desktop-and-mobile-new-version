@@ -11,7 +11,7 @@
         :handlePrevious="handlePrevious"
         :handleNext="handleNext"
         :modidfyContent="modifyContent"
-        :index="index"
+        :chapterIndex="chapterIndex"
         :isActive="isActive"
         :handleClickOnArtist="handleClickOnArtist"
         :availablePieces="availablePieces"
@@ -25,6 +25,12 @@
         :src="videoFullURL"
         :isVideoLoading="isVideoLoading"
         :errorLoadingVideo="errorLoadingVideo"
+        :handlePreviousYTResult="handlePreviousYTResult"
+        :handleNextYTResult="handleNextYTResult"
+        :videosLength="videosLength"
+        :videoIndex="videoIndex"
+        :trackNumber="trackNumber"
+        :tracksNumber="tracksNumber"
       />
       <main-menu/>
     </div>
@@ -51,13 +57,15 @@ export default {
   },
   data() {
     return {
-      index: 0,
+      chapterIndex: 0,
+      numberOfChapters: musicData.music.length,
       chapters: ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"],
       chapter: "I",
       genre: musicData.music[0].musicGenre,
       artists: musicData.music[0].artists,
-      numberOfChapters: musicData.music.length,
       videos: [],
+      videosLength: 0,
+      videoIndex: 0,
       src: "http://www.youtube.com/embed/",
       videoId: "B2U-WKmeJSM",
       trackNumber: 0,
@@ -77,17 +85,39 @@ export default {
   },
   methods: {
     handlePrevious() {
-      this.index -= 1;
+      this.chapterIndex -= 1;
       this.modifyContent();
     },
     handleNext() {
-      this.index += 1;
+      this.chapterIndex += 1;
       this.modifyContent();
     },
+
+    handlePreviousYTResult() {
+      this.videoIndex -= 1;
+      this.loadVideo();
+    },
+    handleNextYTResult() {
+      this.videoIndex += 1;
+      this.loadVideo();
+    },
+    loadVideo() {
+      const currentVideo = this.videos[this.videoIndex];
+      const { videoId, videoTitle } = currentVideo.videos[0];
+      this.videoId = videoId;
+      this.videoTitle = videoTitle;
+      if (currentVideo.type === "video") {
+        this.trackNumber = 0;
+        this.tracksNumber = 0;
+      } else {
+        this.trackNumber = 1;
+        this.tracksNumber = currentVideo.length;
+      }
+    },
     modifyContent() {
-      this.chapter = this.chapters[this.index];
-      this.genre = musicData.music[this.index].musicGenre;
-      this.artists = musicData.music[this.index].artists;
+      this.chapter = this.chapters[this.chapterIndex];
+      this.genre = musicData.music[this.chapterIndex].musicGenre;
+      this.artists = musicData.music[this.chapterIndex].artists;
     },
     displayPiece(artistName, pieceName) {
       this.errorLoadingVideo = "";
@@ -95,24 +125,25 @@ export default {
       this.currentArtistName = artistName;
       this.currentPieceName = pieceName;
       this.isActive = pieceName;
-      return;
       this.isVideoLoading = true;
       const URL = getSearchUrl(artistName, pieceName);
-      this.$axios.get(URL).then(res => {
-        const results = res.data.items;
-        this.handleVideosAndPlaylists(results).then(res => {
-          this.videos = res;
-          this.isVideoLoading = false;
-          console.log("this.videos", this.videos);
-          /*
-          this.videoId = this.videos[0].videos[0].videoId;
-          this.videoTitle = this.videos[0].videos[0].title;
-          */
+      this.$axios
+        .get(URL)
+        .then(res => {
+          const results = res.data.items;
+          this.handleVideosAndPlaylists(results).then(res => {
+            this.videos = res;
+            this.videosLength = res.length;
+            this.videoIndex = 0;
+            this.isVideoLoading = false;
+            console.log("this.videos", this.videos);
+            this.loadVideo();
+          });
+        })
+        .then(err => {
+          console.log("err : ", err);
+          this.errorLoadingVideo = "Error loading video";
         });
-      }).then(err => {
-        console.log('err : ', err);
-        this.errorLoadingVideo = "Error loading video"
-      });
     },
     handleVideosAndPlaylists(results) {
       return new Promise(resolve => {

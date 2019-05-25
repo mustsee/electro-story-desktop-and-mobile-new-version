@@ -3,7 +3,7 @@ const youtubeApiKey = "AIzaSyB5Gb2TJc5CLw0GRFDHOJXoF-HlF0bCP-g";
 
 const getSearchUrl = (artistName, pieceName) => {
     let name = artistName === "artistes divers" ? "" : artistName;
-    return `${baseYoutubeURL}/search?part=snippet&fields=items(id,snippet)&maxResults=10&q=${pieceName} ${name}&key=${youtubeApiKey}`;
+    return `${baseYoutubeURL}/search?part=snippet&fields=items(id,snippet)&maxResults=5&q=${pieceName} ${name}&key=${youtubeApiKey}`;
 }
 
 const getPlaylistItemsUrl = (playlistId) => {

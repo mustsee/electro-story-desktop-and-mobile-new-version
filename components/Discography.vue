@@ -3,9 +3,9 @@
     <div class="chapter-wrapper">
       <div class="chapter">chapter {{ chapter }}</div>
       <div class="pagination">
-        <div :class="[ index === 0 ? 'disabled' : '', 'previous']" @click="handlePrevious">&lt;</div>
+        <div :class="[ chapterIndex === 0 ? 'disabled' : '', 'previous']" @click="handlePrevious">&lt;</div>
         <div
-          :class="[ index === numberOfChapters - 1 ? 'disabled' : '', 'next']"
+          :class="[ chapterIndex === numberOfChapters - 1 ? 'disabled' : '', 'next']"
           @click="handleNext"
         >&gt;</div>
       </div>
@@ -34,7 +34,7 @@
       <div class="artist" v-for="(artist, indexArtist) in artists" :key="indexArtist">
         <div
           :class="[ artist.name === currentArtistName ? 'active-name' : '', 'name']"
-          @click="handleClickOnArtist(index, indexArtist)"
+          @click="handleClickOnArtist(chapterIndex, indexArtist)"
         >{{ artist.name }}</div>
         <div class="pieces" v-if="artist.name === availablePieces.name">
           <div class="border-style">
@@ -69,7 +69,7 @@ export default {
     "handlePrevious",
     "handleNext",
     "modifyContent",
-    "index",
+    "chapterIndex",
     "isActive",
     "handleClickOnArtist",
     "availablePieces",
