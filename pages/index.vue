@@ -163,7 +163,7 @@ export default {
         .catch(err => {
           console.log("err : ", err);
           if (err.code === 403) this.errorLoadingVideo = "Youtube quota exceeded"
-          this.errorLoadingVideo = "Error loading video";
+          else this.errorLoadingVideo = "Error loading video";
         });
     },
     handleVideosAndPlaylists(results) {
