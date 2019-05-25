@@ -140,8 +140,8 @@ export default {
       this.artists = musicData.music[this.chapterIndex].artists;
     },
     displayPiece(artistName, pieceName, artistIndex) {
-      this.errorLoadingVideo = "";
       if (pieceName === this.currentPieceName) return;
+      this.errorLoadingVideo = "";
       this.currentArtistName = artistName;
       this.currentPieceName = pieceName;
       this.isActive = pieceName;
@@ -162,6 +162,7 @@ export default {
         })
         .catch(err => {
           console.log("err : ", err);
+          if (err.code === 403) this.errorLoadingVideo = "Youtube quota exceeded"
           this.errorLoadingVideo = "Error loading video";
         });
     },
