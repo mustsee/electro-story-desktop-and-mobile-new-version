@@ -37,17 +37,19 @@
           @click="handleClickOnArtist(index, indexArtist)"
         >{{ artist.name }}</div>
         <div class="pieces" v-if="artist.name === availablePieces.name">
-          <div class="albums" v-for="(album) in availablePieces.albums" :key="album.title">
-            <div
-              :class="[ isActive === album.title ? 'active' : '', 'title']"
-              @click="displayPiece(availablePieces.name, album.title)"
-            >{{ album.title }}</div>
-          </div>
-          <div class="songs" v-for="(song) in availablePieces.songs" :key="song.title">
-            <div
-              :class="[ isActive === song.title ? 'active' : '', 'title']"
-              @click="displayPiece(availablePieces.name, song.title)"
-            >{{ song.title }}</div>
+          <div class="border-style">
+            <div class="albums" v-for="(album) in availablePieces.albums" :key="album.title">
+              <div
+                :class="[ isActive === album.title ? 'active' : '', 'title']"
+                @click="displayPiece(availablePieces.name, album.title)"
+              >{{ album.title }}</div>
+            </div>
+            <div class="songs" v-for="(song) in availablePieces.songs" :key="song.title">
+              <div
+                :class="[ isActive === song.title ? 'active' : '', 'title']"
+                @click="displayPiece(availablePieces.name, song.title)"
+              >{{ song.title }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -180,15 +182,18 @@ export default {
     }
   }
   .pieces {
-    border-bottom: 1px solid black;
+    .border-style {
+      width: 100%;
+      border-bottom: 1px solid black;
+    }
+    .active {
+      text-decoration: underline;
+    }
     @media (max-width: 600px) {
       .title {
         padding: 10px 0;
       }
     }
-  }
-  .active {
-    text-decoration: underline;
   }
   .active-name {
     background: #fff;
