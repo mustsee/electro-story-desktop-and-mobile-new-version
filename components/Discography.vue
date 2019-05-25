@@ -179,7 +179,13 @@ export default {
     cursor: pointer;
     @media (max-width: 600px) {
       min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
     }
+  }
+  .active-name {
+    background: #fff;
   }
   .pieces {
     .border-style {
@@ -194,9 +200,6 @@ export default {
         padding: 10px 0;
       }
     }
-  }
-  .active-name {
-    background: #fff;
   }
 }
 </style>
