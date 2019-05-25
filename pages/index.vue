@@ -148,7 +148,6 @@ export default {
       this.isVideoLoading = true;
       this.artistActiveNameIndex = artistIndex;
       const URL = getSearchUrl(artistName, pieceName);
-      return;
       this.$axios
         .get(URL)
         .then(res => {
