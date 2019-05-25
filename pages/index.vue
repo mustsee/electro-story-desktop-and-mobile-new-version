@@ -70,7 +70,7 @@ export default {
       videos: [],
       videosLength: 0,
       videoIndex: 0,
-      src: "http://www.youtube.com/embed/",
+      src: "https://www.youtube.com/embed/",
       videoId: "B2U-WKmeJSM",
       trackNumber: 0,
       tracksNumber: 0,
