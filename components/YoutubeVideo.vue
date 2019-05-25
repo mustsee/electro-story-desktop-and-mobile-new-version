@@ -5,7 +5,6 @@
         :class="[!videosLength || videoIndex === 0 ? 'disabled' : '', 'btn']"
         @click="handlePreviousYTResult"
       >prev</div>
-      <div>video length : {{ videosLength }}, video index : {{ videoIndex }}</div>
       <div
         :class="[!videosLength || videoIndex === videosLength - 1 ? 'disabled' : '', 'btn']"
         @click="handleNextYTResult"
@@ -26,11 +25,11 @@
       <div class="loading" v-else>{{ errorLoadingVideo }}</div>
     </div>
     <div class="playlist-buttons">
-      <div :class="[ !tracksNumber ? 'disabled' : '' , 'btn']">|&lt;</div>
+      <div :class="[ !tracksNumber || trackNumber - 1 === 0 ? 'disabled' : '' , 'btn']" @click="handlePreviousInPlaylist">|&lt;</div>
       <div
         :class="[ !tracksNumber ? 'disabled' : '', 'btn track-number']"
       >{{ trackNumber }} / {{ tracksNumber }}</div>
-      <div :class="[ !tracksNumber ? 'disabled' :  '', 'btn']">&gt;|</div>
+      <div :class="[ !tracksNumber || trackNumber === tracksNumber ? 'disabled' :  '', 'btn']" @click="handleNextInPlaylist">&gt;|</div>
     </div>
   </div>
 </template>
@@ -46,7 +45,9 @@ export default {
     "handlePreviousYTResult",
     "handleNextYTResult",
     "videosLength",
-    "videoIndex"
+    "videoIndex",
+    "handlePreviousInPlaylist",
+    "handleNextInPlaylist"
   ]
 };
 </script>

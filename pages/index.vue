@@ -31,6 +31,8 @@
         :videoIndex="videoIndex"
         :trackNumber="trackNumber"
         :tracksNumber="tracksNumber"
+        :handlePreviousInPlaylist="handlePreviousInPlaylist"
+        :handleNextInPlaylist="handleNextInPlaylist"
       />
       <main-menu/>
     </div>
@@ -92,7 +94,6 @@ export default {
       this.chapterIndex += 1;
       this.modifyContent();
     },
-
     handlePreviousYTResult() {
       this.videoIndex -= 1;
       this.loadVideo();
@@ -100,6 +101,20 @@ export default {
     handleNextYTResult() {
       this.videoIndex += 1;
       this.loadVideo();
+    },
+    handlePreviousInPlaylist() {
+      this.trackNumber -= 1;
+      this.modifyPlaylistItem();
+    },
+    handleNextInPlaylist() {
+      this.trackNumber += 1;
+      this.modifyPlaylistItem();
+    },
+    modifyPlaylistItem() {
+      const currentVideo = this.videos[this.videoIndex];
+      const { videoId, videoTitle } = currentVideo.videos[this.trackNumber - 1];
+      this.videoId = videoId;
+      this.videoTitle = videoTitle;
     },
     loadVideo() {
       const currentVideo = this.videos[this.videoIndex];
@@ -136,11 +151,10 @@ export default {
             this.videosLength = res.length;
             this.videoIndex = 0;
             this.isVideoLoading = false;
-            console.log("this.videos", this.videos);
             this.loadVideo();
           });
         })
-        .then(err => {
+        .catch(err => {
           console.log("err : ", err);
           this.errorLoadingVideo = "Error loading video";
         });
