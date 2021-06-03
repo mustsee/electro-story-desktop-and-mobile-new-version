@@ -6,7 +6,7 @@
       </div>
       <img
         v-show="!showBookInformation && isMenuAActive"
-        src="/modulations-book-cover.jpg"
+        src="/electro-story-desktop-and-mobile-new-version/modulations-book-cover.jpg"
         height="auto"
         width="200px"
         alt="cover of the book modulations, about electronic music history"

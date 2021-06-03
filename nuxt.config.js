@@ -14,7 +14,7 @@ export default {
       { hid: 'description', name: 'description', content: pkg.description }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/electro-story-desktop-and-mobile-new-version/favicon.ico' },
       {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Rubik:300,300i,400,700&display=swap'},
       {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Karla:400,400i&display=swap'}
     ]
@@ -51,6 +51,10 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
   },
+
+  router: {
+    base: '/electro-story-desktop-and-mobile-new-version/'
+},
 
   /*
   ** Build configuration
