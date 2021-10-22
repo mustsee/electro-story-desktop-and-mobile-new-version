@@ -1,7 +1,7 @@
 {
   "name": "electro-story",
   "version": "1.0.0",
-  "description": "History of Electro Music",
+  "description": "History of Electro Music based on the book Modulations by Peter Shapiro",
   "author": "thomas.sypniewski@gmail.com",
   "private": true,
   "scripts": {
